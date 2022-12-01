@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Comunicazione via Websocket</title>
+<script type="text/javascript">
+  "use strict";
+  function gestoreRicezione(messaggio){
+    document.getElementById("ricezione").textContent += messaggio.data + "\n"; // [1]
+  }
+
+  let ws = new WebSocket("ws://10.1.0.52:8080/serverchat/text/echo"); // [2]
+  ws.onmessage = gestoreRicezione;
+
+  function inviaAlServer(){
+    let messaggio = document.getElementById("msg").value;
+    ws.send( messaggio );  // [3]
+  }
+  function chiudiLaConnessione(){
+    ws.close();  // [4]
+  }
+
+</script>
+</head>
+<body>
+  <textarea id="ricezione" readonly></textarea><br/>
+  <input id="msg" type="text" />
+  <button onClick="inviaAlServer()">invia!</button>
+  <button onClick="chiudiLaConnessione()">chiudi</button>
+</body>
+</html>

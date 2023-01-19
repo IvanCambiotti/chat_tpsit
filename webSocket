@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Comunicazione via Websocket</title>
+<script type="text/javascript">
+  "use strict";
+  let ws = new WebSocket("ws://10.1.0.52:8080/serverchat/textChat"); // [2]
+  
+  function inviaAlServer(){
+    let login = "login|" +document.getElementById("nome").value+
+    "|"+document.getElementById("password").value;
+    ws.send( login);  // [3]
+    console.log("login");
+  }
+
+</script>
+</head>
+</html>
+<style>
+    #ricezione{
+        height: 200px;
+    }
+</style>
+<body>
+  nome utente<input id="nome" type="text"/><br>
+  password<input id="password" type="text"/><br>
+  <br><button onClick="inviaAlServer()">log in</button><br>
+  <textarea id="ricezione" readonly></textarea></body></br>
+  <input id="msg" type="text" />
+  <button onClick="inviaAlServer()">invia!</button>
+</body>
+</html>

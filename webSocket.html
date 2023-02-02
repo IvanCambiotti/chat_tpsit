@@ -8,30 +8,36 @@
   let ws = new WebSocket("ws://10.1.0.52:8080/serverchat/textChat"); // [2]
    ws.onmessage = gestoreRicezione;
    let accesso = false;
-   
+   let data = new Date();
+   let messaggio;
 
   function inviaAlServer(){
-    let login = "login|" +document.getElementById("nome").value+"|"+
+    let login = "login|" +document.getElementById("username").value+"|"+
     document.getElementById("password").value;
     ws.send( login);  // [3]
   }
 
   function inviaMessaggio(){
-    let messaggio = document.getElementById ("nome").value +"|"+
-    document.getElementById("password").value+"|"+document.getElementById("messaggio").value;
+   
+     messaggio = "msg|"+data.getHours()+":"+data.getMinutes()+"|"+document.getElementById ("username").value +"|"+document.getElementById("messaggio").value;
     ws.send(messaggio);
    }
 
   function gestoreRicezione(messaggio){
+    const x = messaggio.data.split("|");
+    console.log(x)
     if(messaggio.data == "auth|benvenuto"){
       accesso = true;
+    }
+    if(x[0] == "lista"){
+      console.log("jwfvjsd")
     }
     if (accesso == true){
       primapagina.style.display = "none";
       secondapagina.style.display = "block";
       document.getElementById("ricezione").textContent += messaggio.data +"\n";
-
     }
+
   }
 
 </script>
@@ -45,14 +51,15 @@
 </style>
 <body>
   <div id="primapagina">
-  nome utente<input id="nome" type="text"/><br>
-  password<input id="password" type="text"/><br>
- <br><button onClick="inviaAlServer()">log in</button><br>
+  nome utente <input id="username" type="text"/><p>
+  password <input id="password" type="text"/><p>
+ <p><button onClick="inviaAlServer()">log in</button><p>
 </div>
 <div id="secondapagina">
-  <br><input id="messaggio" type="text" /><br>
-  <br><button onClick="inviaMessaggio()">messaggio</button><br>
-  <br><textarea id="ricezione" readonly></textarea><br>
+  <p><input id="messaggio" type="text" /><p>
+  <p><button onClick="inviaMessaggio()">messaggio</button><p>
+  <p><textarea id="ricezione" readonly></textarea><p>
+  <p><textarea id="accessi" readonly></textarea><p>
 </div>
 </head>
 </body>
